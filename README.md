@@ -21,3 +21,4 @@ Note : Multiprocessing can cause "phantom" execution traces after the program is
 
 Have fun and good hacking !
 
+![alt text](https://raw.githubusercontent.com/matthieu-hackwitharts/TheGreatWorker/main/capture1.png)
