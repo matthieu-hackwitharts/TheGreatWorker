@@ -9,12 +9,14 @@ TheGreatWorker.py -[option 1] (argument1) -[option 2] (argument2)
 ```
 
 Two main options :
-
+```sh
 --help or -h (joke, it's not a real option but you can use it as you want)
+
 
 --output or -o : Save script output to a file by specify a location, highly recommended because of the lack of screen space.
 
 --password or -p : Use a given password to run sudo permissions,if not, the script will not return the result of this command.
+```
 
 
 Note : Multiprocessing can cause "phantom" execution traces after the program is stopped, if this is the case do not hesitate to repeat Ctrl+c to stop it definitively.
