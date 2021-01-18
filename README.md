@@ -4,8 +4,9 @@ A multiprocessing based Linux Enum script
 TheGreatWorker is a Linux enumeration script written in Python3 and based on multiprocessing, which guarantees its execution speed.
 
 Usage :
-
+```sh
 TheGreatWorker.py -[option 1] (argument1) -[option 2] (argument2)
+```
 
 Two main options :
 
