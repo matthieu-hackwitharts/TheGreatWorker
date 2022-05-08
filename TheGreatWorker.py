@@ -6,11 +6,6 @@ import argparse
 import requests
 
 
-
-
-
-
-
 class bcolors:
 
    yellow = '\033[93m'
@@ -22,10 +17,6 @@ class bcolors:
    bold = '\033[1m'
 
    
-   
-
-
-
 def verify_defenses():
    grsec_yes = b'Yes'
    grsec_no = b'Not found grsecurity'
@@ -43,29 +34,16 @@ def verify_defenses():
    os.system("rm /tmp/commande.sh")
    
  
-
-  
-
-  
    if(grsec_yes in verif_grsecurity.stdout):
-
-
       grsec=True
       print(bcolors.yellow + "grsec is present" + bcolors.end)
       
 
    elif(grsec_no in verif_grsecurity.stdout):
-
-
       grsec=False
       print(bcolors.blue + "grsec is not present !" + bcolors.end)
    
-   
-   
-   
-      
-
-   
+  
    pax_yes = b"Yes"
    pax_no = b"Not found PaX"
 
@@ -87,11 +65,7 @@ def verify_defenses():
       pax_sec=False
       print(bcolors.blue + "pax_yes not present" +bcolors.end)
    
-
-   
    exec_no = b"Not found Execshield"
-
-
 
    exec_sec = False
    os.system('echo "(grep "exec-shield" /etc/sysctl.conf || echo "Not found Execshield")" > /tmp/commande3.sh')
@@ -110,8 +84,6 @@ def verify_defenses():
       exec_sec = True
       print(bcolors.yellow + "execshield is present" + bcolors.end)
 
-
-   
    selinux_no = b"Not found sestatus"
 
    selinux_sec = False
@@ -127,13 +99,10 @@ def verify_defenses():
       selinux_sec = False
       print(bcolors.blue + "selinux not present"+ bcolors.end)
 
-   
    else:
       selinux_sec = True
       print(bcolors.yellow + "selinux is present" + bcolors.end)
 
-
-   
    aslr_no = b"0"
 
    aslr_sec = False
@@ -148,14 +117,11 @@ def verify_defenses():
       aslr_sec = False
       print(bcolors.blue + "asl not present\n"+ bcolors.blue)
 
-
    else:
-
       aslr_sec = True
       print(bcolors.yellow + "aslr is present\n" + bcolors.end)
 
    return True
-
 
 
 def useful_software():
@@ -164,28 +130,15 @@ def useful_software():
 
    print("################################################################\n")
 
-  
-
    software_list = ['nmap', 'aws', 'nc', 'netcat', 'nc.traditionnal', 'wget', 'curl', 'ping', 'gcc', 'g++', 'make', 'gdb', 'base64', 'socat', 'python', 'python2', 'python3', 'python2.7', 'python2.6', 'python3.6', 'python3.7', 'perl', 'ruby', 'xterm', 'doas', 'sudo', 'fetch', 'docker', 'lxc', 'ctr', 'run', 'rkt', 'kubectl']
 
    for x in software_list:
 
       verify = subprocess.call(['which', x])
       
-
-
-
-
-
-
       if verify ==0:
 
-
-
-         
          print(bcolors.green + "Tool {} is installed\n" .format(x) + bcolors.end)
-
-
       else:
 
          print(bcolors.red + "Tool {} is not installed\n" .format(x) + bcolors.end)
@@ -195,11 +148,7 @@ def useful_software():
    return True
 
 
-
-
 def process():
-
-
 
    verif_process = os.system('echo "ps -aux | grep root" > /tmp/commande_pr.sh')
 
@@ -209,15 +158,12 @@ def process():
    os.system("rm /tmp/commande_pr.sh")
 
 
-
 def path():
 
    print("\n")
    print("\n")
 
    print(bcolors.bold +bcolors.blue +"Is there any vuln in the PATH maybe ?\n"+ bcolors.end)
-
-
 
    os.system('echo "$PATH" > /tmp/path.sh')
    print("*************************************************************")
@@ -230,21 +176,13 @@ def path():
 
 
 
-
-
-
-
 def get_suid(file):
-
-   
-
 
    print("\n")
    print("\n")
 
    print(bcolors.bold +bcolors.magenta+"Looking for great suid binaries !\n"+bcolors.end)
    print(bcolors.bold +bcolors.yellow +"***************************************************************"+bcolors.end)
-
 
    with open(file,"r") as file:
       file_output = file.read()
@@ -269,10 +207,6 @@ def start_suid():
             print(f"Url For SUID Exploit : https://gtfobins.github.io/gtfobins/{suid}/#suid")
    
 
-
-
-
-
 def writable_directories():
 
    os.system('echo "find / -type d -writable 2> /dev/null" > /tmp/check_dir.sh')
@@ -284,18 +218,15 @@ def writable_directories():
 
    print("*********************************************************************************")
 
-
    subprocess.call(['bash', '/tmp/check_dir.sh'])
 
    print("***********************************************************************************")
-
    os.system("rm /tmp/check_dir.sh")
    return True
 
 
 
 def authorized_exec():
-
 
    os.system('echo "find / -perm -g=s -o -perm -4000 ! -type l -maxdepth 6 -exec ls -ld {} \; 2>/dev/null" > /tmp/check_exec.sh')
 
@@ -311,7 +242,6 @@ def authorized_exec():
 
    
       
-
 def crontab():
 
    os.system('echo "cat /etc/crontab" > /tmp/cron.sh')
@@ -333,14 +263,12 @@ def crontab():
 
 def sudol(password_g):
 
-
    print("\n")
    print("\n")
 
    print(bcolors.bold+bcolors.red+"CHECKING FOR SUDO PERMISSIONS..."+bcolors.end)
 
    
-
    password = password_g
    os.system(f'echo {password_g} | sudo -S -l | sudo tee /tmp/test.txt > /dev/null')
    
@@ -352,10 +280,8 @@ def sudol(password_g):
    print("\n")
       
 
-   
    for suid in output:
 
-       
       response = requests.get(f"https://gtfobins.github.io/gtfobins/{suid}/") 
       if response.status_code != 404:    
          print(bcolors.bold+bcolors.yellow+"[+] Way founded !"+bcolors.end)
@@ -372,18 +298,12 @@ def sudol(password_g):
      
       
 
-
-
 def enum_users():
-
-
 
    os.system('echo "cut -d: -f1 /etc/passwd" > /tmp/cond.sh')
    print("\n")
 
-
    print(bcolors.bold + bcolors.magenta+ "Current list of users....\n"+ bcolors.end)
-
 
    subprocess.call(['bash', '/tmp/cond.sh'])
    print("***************************************************************************")
@@ -394,8 +314,6 @@ def enum_users():
 
 def network_interface():
    print("\n")
-
-
    os.system('echo "cat /etc/networks" > /tmp/c1.sh')
    os.system('echo "ip a" > /tmp/c2.sh')
 
@@ -412,16 +330,12 @@ def network_interface():
    return True
 
 
-
 def check_write():
 
    print("\n")
    print("\n")
 
    print(bcolors.bold+bcolors.magenta+"Do you have RIGHTS ?"+bcolors.end)
-
-
-
    path1 = os.access("/etc/sudoers", os.W_OK)
    print(path)
 
@@ -431,12 +345,8 @@ def check_write():
 
    path4 = os.access("/etc/passwd", os.W_OK )
 
-   
-   
-
 
    if path1 is True:
-
 
       print(bcolors.yellow +"/etc/sudoers is writable"+ bcolors.end)
 
@@ -471,8 +381,6 @@ def check_write():
    return True
  
 
-
-
 def search_files():
 
    print("\n")
@@ -481,19 +389,12 @@ def search_files():
 
    print("#####################################################################")
 
-
-
    os.system('grep --color=auto -rnw "/" -ie "PASSWORD" --color=always 2> /dev/null')
    print("#######################################################################")
 
    print('\n')
    print("\n")
 
-   
-
-
-
-   
    print(bcolors.bold + bcolors.green+"Looking for usernames files....\n"+bcolors.end)
 
    print("########################################################################")
@@ -501,11 +402,9 @@ def search_files():
 
    print("#########################################################################")
 
-
    print("\n")
    print("\n")
 
-  
    print("Looking for interesting log files...\n")
 
    print("************************************************************************")
@@ -536,20 +435,9 @@ def search_files():
    return True
 
 
-
-
-
-
 def main_f():
 
-
-
    queue=Queue()
-
-
-
-
-
    proc10= multiprocessing.Process(target=verify_defenses)
    proc2 = multiprocessing.Process(target=useful_software)
    proc3 = multiprocessing.Process(target=process)
@@ -564,9 +452,6 @@ def main_f():
    proc12 =multiprocessing.Process(target=check_write)
    proc13 = multiprocessing.Process(target=search_files)
       
-   
-   
-
    proc6.start()
    proc6.join()
 
@@ -608,20 +493,7 @@ def main_f():
    proc13.join()
 
 
-
-   
-
-
-
-
-
 if __name__=="__main__":
-
-
-
-  
-
-
 
 
    print(r"""
@@ -686,8 +558,6 @@ if __name__=="__main__":
 
          print(bcolors.yellow+"Finished ! Check at :", args.output+bcolors.end)
 
-
-   
    elif args.password:
 
       sudol(args.password)
@@ -700,66 +570,4 @@ if __name__=="__main__":
       main_f()
       print(bcolors.bold+bcolors.yellow+"Finished !"+bcolors.end)
       print(bcolors.blue+"*******************************************************************".bcolors.end)
-
-
-         
-      
-      
-
-
-
-
-
-
-
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      
-
-
-
-
-
-
-      
-
-
-
-
-
-
-   
-
-
-
- 
-
-
-
-
-
 
